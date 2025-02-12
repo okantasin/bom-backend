@@ -1,2 +1,20 @@
 server:
   port: 8081
+
+spring:
+    datasource:
+      url: jdbc:postgresql://localhost:5432/mydatabase
+      username: admin
+      password: password
+      driver-class-name: org.postgresql.Driver
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        ddl-auto: update  # "update", "create", "create-drop" seçenekleri var
+      show-sql: true  # SQL sorgularını konsola yazdırır
+      properties:
+        hibernate:
+          format_sql: true  # SQL çıktısını düzenli gösterir
+    sql:
+      init:
+        mode: always  # Uygulama başlatıldığında SQL dosyalarını çalıştırır
