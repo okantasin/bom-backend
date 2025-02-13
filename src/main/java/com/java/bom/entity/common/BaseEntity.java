@@ -1,4 +1,4 @@
-package com.java.bom.entity;
+package com.java.bom.entity.common;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PreUpdate;
@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-@NoArgsConstructor
-@AllArgsConstructor
+
 public abstract class BaseEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();

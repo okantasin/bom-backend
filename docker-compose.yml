@@ -1,30 +1,19 @@
 version: '3.8'
 
 services:
-  db:
+  postgres:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: postgres-container
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mrp-database
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: password
-    ports:
-      - "5050:80"
-    depends_on:
-      - db
-
 volumes:
   postgres_data:
+    driver: local

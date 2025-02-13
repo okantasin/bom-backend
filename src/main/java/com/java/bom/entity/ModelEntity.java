@@ -1,6 +1,7 @@
 package com.java.bom.entity;
 
 
+import com.java.bom.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class ModelEntity extends BaseEntity {
     private int stId;
 
     @ManyToOne
-    @JoinColumn(name = "projectId", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
     @OneToMany(mappedBy = "model",cascade =CascadeType.ALL)

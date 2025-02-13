@@ -1,12 +1,11 @@
 package com.java.bom.entity;
 
+import com.java.bom.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "project")
@@ -19,12 +18,13 @@ public class ProjectEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
-    private String projectName;
-    private int productionGoal;
-    private String distributionType;
-    private int stId;
 
-    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
-    private List<ModelEntity>  models;
+    @Column(nullable = false)
+    private String name;
+
+    private Long configTypeId;
+
+    @Column(nullable = false)
+    private long stId;
 
 }
