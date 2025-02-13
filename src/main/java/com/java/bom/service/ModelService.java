@@ -1,22 +1,14 @@
 package com.java.bom.service;
 
-import com.java.bom.dto.model.CreateModelRequest;
-import com.java.bom.dto.model.CreateModelResponse;
-import com.java.bom.dto.model.ModelResponse;
-import com.java.bom.dto.project.CreateProjectRequest;
-import com.java.bom.dto.project.CreateProjectResponse;
-import com.java.bom.dto.project.ProjectResponse;
-import jakarta.validation.Valid;
+import com.java.bom.entity.Model;
 
 import java.util.List;
 
 public interface ModelService {
 
-    void deleteModel(Long id);
+    Model addModel(Long projectId, String modelName);
 
-    List<ModelResponse> getAllModels();
+    List<Model> getModelsByProject(Long projectId);
 
-    ModelResponse getModelProjectById(Long projectId);
-
-    CreateModelResponse createModel(@Valid CreateModelRequest request);
+    void deleteModel(Long modelId);
 }

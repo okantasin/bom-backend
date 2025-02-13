@@ -8,23 +8,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "part")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartEntity extends BaseEntity {
+public class ActionLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long partId;
+    private Long id;
 
-    private String partName;
+    private String entityName;
+    private Long entityId;
+    private String action;
+    private String details;
+    private LocalDateTime timestamp;
 
-    private int stId;
-
-    @ManyToOne()
-    @JoinColumn(name = "model_id", nullable = false)
-    private ModelEntity model;
+    // Constructors, Getters, and Setters
 }

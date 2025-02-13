@@ -1,4 +1,4 @@
-package com.java.bom.repository;
+package com.java.bom.repository.common;
 
 import com.java.bom.entity.common.GeneralStatusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
