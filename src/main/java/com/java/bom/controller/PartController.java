@@ -5,23 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/parts")
 public class PartController {
-
     @Autowired
     private PartService partService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Part> addPart(@RequestParam Long modelId, @RequestParam String partName, @RequestParam String partNumber) {
-        return ResponseEntity.ok(partService.addPart(modelId, partName, partNumber));
+    @PostMapping("/createPart")
+    public ResponseEntity<Part> addPart(@RequestParam Long modelId, @RequestParam String partName) {
+        return ResponseEntity.ok(partService.addPart(modelId, partName));
     }
 
-    @GetMapping("/list/{modelId}")
-    public ResponseEntity<List<Part>> getPartsByModel(@PathVariable Long modelId) {
-        return ResponseEntity.ok(partService.getPartsByModel(modelId));
+    @PostMapping("/list/{partId}")
+    public ResponseEntity<Part> getPart(@PathVariable Long partId) {
+        return ResponseEntity.ok(partService.getPartById(partId));
     }
 
     @DeleteMapping("/delete/{partId}")

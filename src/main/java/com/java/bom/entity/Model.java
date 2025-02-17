@@ -3,27 +3,18 @@ package com.java.bom.entity;
 
 import com.java.bom.entity.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Model {
+public class Model  extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    private boolean active = true; // Sadece SABIT planlı projelerde kullanılacak
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
@@ -32,10 +23,62 @@ public class Model {
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ModelPercentage> modelPercentages;
 
-    private boolean deleted = false; // Soft delete için
+    private long statusId;
+
+    private String modelNumber;
+
+    public String getModelNumber() {
+        return modelNumber;
+    }
+
+    public void setModelNumber(String modelNumber) {
+        this.modelNumber = modelNumber;
+    }
+
+    public long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(long statusId) {
+        this.statusId = statusId;
+    }
+
+    public Model() {
+    }
 
     public Model(Long modelId) {
     }
 
-    // Constructors, Getters, and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public List<ModelPercentage> getModelPercentages() {
+        return modelPercentages;
+    }
+
+    public void setModelPercentages(List<ModelPercentage> modelPercentages) {
+        this.modelPercentages = modelPercentages;
+    }
+
 }

@@ -1,14 +1,18 @@
 package com.java.bom.service.impl;
 
-import com.java.bom.entity.Model;
 import com.java.bom.entity.Part;
+import com.java.bom.entity.common.GeneralStatusEntity;
 import com.java.bom.repository.ModelRepository;
 import com.java.bom.repository.PartRepository;
+import com.java.bom.repository.common.GeneralStatusRepository;
 import com.java.bom.service.PartService;
+import com.java.bom.utils.RandomCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class PartServiceImpl implements PartService {
 
@@ -17,21 +21,35 @@ public class PartServiceImpl implements PartService {
 
     @Autowired
     private ModelRepository modelRepository;
+    @Autowired
+    private GeneralStatusRepository generalStatusRepository;
 
-    public Part addPart(Long modelId, String partName, String partNumber) {
-        Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new RuntimeException("Model not found"));
+
+    public Part addPart(Long modelId, String partName) {
 
         Part part = new Part();
         part.setName(partName);
-        part.setPartNumber(partNumber);
-      //  part.setModel(model);
-
+        part.setPartNumber(RandomCodeGenerator.generateUUIDCode());
+        GeneralStatusEntity defaultStatus = generalStatusRepository.findByShortCode("ACTIVE");
+        if(Objects.isNull(defaultStatus)){
+            throw new RuntimeException("ACTIVE status not found");
+        }
+        part.setId(defaultStatus.getId());
         return partRepository.save(part);
     }
 
-    public List<Part> getPartsByModel(Long modelId) {
-        return partRepository.findByModelId(modelId);
+    @Override
+    public List<Part> getAllPart() {
+        List<Part> getAllPart = partRepository.findAll();
+        if(getAllPart.isEmpty()){
+            return getAllPart;
+        }
+        return List.of();
+    }
+
+    @Override
+    public Part getPartById(Long partId) {
+        return  partRepository.findById(partId).orElse(null);
     }
 
     public void deletePart(Long partId) {

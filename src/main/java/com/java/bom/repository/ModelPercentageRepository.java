@@ -1,12 +1,16 @@
 package com.java.bom.repository;
 
 import com.java.bom.entity.ModelPercentage;
+import com.java.bom.utils.PlanningType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 public interface ModelPercentageRepository extends JpaRepository<ModelPercentage, Long> {
-    List<ModelPercentage> findByModelIdAndYearAndMonth(Long modelId, int year, Integer month);
-    List<ModelPercentage> findByModelIdAndYearAndWeek(Long modelId, int year, Integer week);
+
+    List<ModelPercentage> findByPlanningType(PlanningType planningType);
+    List<ModelPercentage> findByPlanningTypeAndYearAndMonth(PlanningType planningType, int year, Integer month);
+    List<ModelPercentage> findByPlanningTypeAndYearAndWeek(PlanningType planningType, int year, Integer week);
+
+
 }

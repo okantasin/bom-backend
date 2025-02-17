@@ -20,3 +20,18 @@ spring:
     sql:
       init:
         mode: always  # Uygulama başlatıldığında SQL dosyalarını çalıştırır
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  version: 3.0.0
