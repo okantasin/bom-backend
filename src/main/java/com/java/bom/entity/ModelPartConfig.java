@@ -1,15 +1,10 @@
 package com.java.bom.entity;
 
-import com.java.bom.entity.common.BaseEntity;
-import com.java.bom.entity.common.GeneralStatusEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-public class ModelPart  extends BaseEntity {
+@Table(name = "model_part_config")
+public class ModelPartConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +18,7 @@ public class ModelPart  extends BaseEntity {
     @JoinColumn(name = "part_id", nullable = false)
     private Part part;
 
-    private int quantity;
-
-    private Long statusId;
+    private int requiredQuantity;
 
     public Long getId() {
         return id;
@@ -51,19 +44,11 @@ public class ModelPart  extends BaseEntity {
         this.part = part;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getRequiredQuantity() {
+        return requiredQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setRequiredQuantity(int requiredQuantity) {
+        this.requiredQuantity = requiredQuantity;
     }
 }

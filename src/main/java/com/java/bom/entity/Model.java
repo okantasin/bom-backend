@@ -1,6 +1,7 @@
 package com.java.bom.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.java.bom.entity.common.BaseEntity;
 import jakarta.persistence.*;
 

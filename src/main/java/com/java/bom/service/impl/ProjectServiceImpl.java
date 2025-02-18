@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 
@@ -34,6 +35,8 @@ public class ProjectServiceImpl implements ProjectService {
                 throw new RuntimeException("ACTIVE status not found");
             }
             project.setStatusId(defaultStatus.getId());
+            project.setStartDate(LocalDate.now());
+            project.setEndDate(LocalDate.now().plusMonths(12));
         try{
             projectRepository.save(project);
         }catch (Exception e){

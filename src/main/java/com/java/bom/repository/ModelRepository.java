@@ -15,6 +15,14 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
     @Query("SELECT p.planningType FROM Project p , Model  m where m.project.id=p.id and p.id =:projectId ")
     Optional<PlanningType>  findProjectByModeId(@Param("modelId") Long modelId,@Param("projectId") Long projectId);
 
+    @Query("SELECT mp FROM ModelPercentage mp , Model  m where m.id= mp.model.id ")
+    Optional<PlanningType>  findPersantageByModelId(@Param("modelId") Long modelId,@Param("projectId") Long projectId);
+
+    Optional<Model>findModelByProject_IdAndId(Long projectId, Long id);
+
+    List<Model> findModelByProject_Id(Long projectId);
 
     Optional<Model> findModelById(Long id);
+
+    Optional<Model> findModelByModelNumberAndProject_Id(String modelNumber, Long projectId);
 }

@@ -20,21 +20,19 @@ public class PartServiceImpl implements PartService {
     private PartRepository partRepository;
 
     @Autowired
-    private ModelRepository modelRepository;
-    @Autowired
     private GeneralStatusRepository generalStatusRepository;
 
 
-    public Part addPart(Long modelId, String partName) {
-
+    public Part addPart(Long stockQuantity, String partName) {
         Part part = new Part();
         part.setName(partName);
         part.setPartNumber(RandomCodeGenerator.generateUUIDCode());
+        part.setStockQuantity(stockQuantity);
         GeneralStatusEntity defaultStatus = generalStatusRepository.findByShortCode("ACTIVE");
         if(Objects.isNull(defaultStatus)){
             throw new RuntimeException("ACTIVE status not found");
         }
-        part.setId(defaultStatus.getId());
+        part.setStatusId(defaultStatus.getId());
         return partRepository.save(part);
     }
 

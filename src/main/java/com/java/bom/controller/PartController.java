@@ -12,8 +12,8 @@ public class PartController {
     private PartService partService;
 
     @PostMapping("/createPart")
-    public ResponseEntity<Part> addPart(@RequestParam Long modelId, @RequestParam String partName) {
-        return ResponseEntity.ok(partService.addPart(modelId, partName));
+    public ResponseEntity<Part> addPart(@RequestParam Long stockQuantity, @RequestParam String partName) {
+        return ResponseEntity.ok(partService.addPart(stockQuantity,partName));
     }
 
     @PostMapping("/list/{partId}")

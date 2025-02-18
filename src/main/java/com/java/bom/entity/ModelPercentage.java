@@ -16,12 +16,26 @@ public class ModelPercentage extends BaseEntity {
     private Integer week;
     private double percentage;
     private Long statusId;
+
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
     private Model model;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PlanningType planningType;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     public PlanningType getPlanningType() {
         return planningType;

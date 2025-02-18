@@ -1,6 +1,7 @@
 package com.java.bom.repository;
 
 import com.java.bom.entity.ModelPart;
+import com.java.bom.entity.ModelPartConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,6 @@ public interface ModelPartRepository extends JpaRepository<ModelPart, Long> {
 
     @Query("Select  mp FROM  ModelPart mp where mp.part.id =: partId and mp.model.id =: modelId ")
     Optional<ModelPart> inquireModelPartByPart_IdAndModel_Id(@Param("partId") Long partId, @Param("modelId")Long modelId);
+
+    List<ModelPart> getModelPartByModel_Id(Long modelId);
 }
