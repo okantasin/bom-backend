@@ -1,11 +1,14 @@
 package com.java.bom.service;
 
-import com.java.bom.dto.part.CreatePartRequest;
-import com.java.bom.dto.part.PartResponse;
+import com.java.bom.entity.Part;
+
+import java.util.List;
+
 
 public interface PartService {
+    Part addPart(Long stockQuantity, String partName);
+    List<Part> getAllPart();
+    Part getPartById(Long partId);
 
-    PartResponse createPart(CreatePartRequest createPartRequest);
-
-
+    void deletePart(Long partId);
 }

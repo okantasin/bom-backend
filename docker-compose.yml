@@ -11,8 +11,34 @@ services:
       POSTGRES_DB: mrp-database
     ports:
       - "5432:5432"
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mrp-database"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  app:
+    image: bom-backend
+    container_name: spring_app
+    restart: always
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mrp-database
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
 
 volumes:
   postgres_data:

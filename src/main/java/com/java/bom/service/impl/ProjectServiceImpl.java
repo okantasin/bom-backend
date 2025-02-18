@@ -1,20 +1,20 @@
 package com.java.bom.service.impl;
 
-import com.java.bom.dto.project.CreateProjectRequest;
-import com.java.bom.dto.project.CreateProjectResponse;
-import com.java.bom.dto.project.ProjectResponse;
-import com.java.bom.entity.ProjectEntity;
+import com.java.bom.dto.GenericResponse;
+import com.java.bom.entity.Project;
+
 import com.java.bom.entity.common.GeneralStatusEntity;
-import com.java.bom.entity.common.GeneralTypeEntity;
-import com.java.bom.repository.GeneralTypeRepository;
 import com.java.bom.repository.ProjectRepository;
-import com.java.bom.repository.StatusRepository;
+import com.java.bom.repository.common.GeneralStatusRepository;
+import com.java.bom.service.ActionLogService;
 import com.java.bom.service.ProjectService;
+import com.java.bom.utils.PlanningType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Objects;
 
 
 @Service
@@ -22,60 +22,50 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
-
     @Autowired
-    private StatusRepository statusRepository;
-
+    private ActionLogService actionLogService;
     @Autowired
-    private GeneralTypeRepository generalTypeRepository;
-    @Override
-    public CreateProjectResponse createProject(CreateProjectRequest request) {
-
-        if(request.getName() == null || request.getName().isEmpty()) {
-            throw new IllegalArgumentException("Project name cannot be empty");
-        }
-        if (projectRepository.findByName(request.getName()).isPresent()) {
-            throw new IllegalArgumentException("Project with name '" + request.getName() + "' already exists.");
-        }
-
-
-        GeneralTypeEntity configurationType = generalTypeRepository.findByShortCodeAndEntityCodeName(request.getConfigType(),"PROJECT");
-        if(configurationType == null) {
-            throw new IllegalArgumentException("Project with name '" + request.getName() + "' does not exist.");
-        }
-
-        ProjectEntity project = new ProjectEntity();
-        project.setName(request.getName());
-        project.setConfigTypeId(configurationType.getTypeId());
-        GeneralStatusEntity activeStatus = statusRepository.findByShortCodeAndEntityCodeName("ACTIVE","PROJECT");
-        if(activeStatus == null) {
-            throw new IllegalArgumentException("Project with name '" + request.getName() + "' does not exist.");
-        }
-        project.setStId(activeStatus.getStatusId());
-        ProjectEntity savedProject = projectRepository.save(project);
-
-        // Return response with ID
-        return CreateProjectResponse.builder()
-                .projectId(String.valueOf(savedProject.getProjectId()))
-                .configType(configurationType.getShortCode())
-                .name(savedProject.getName())
-                .build();
-    }
-
-
+    private GeneralStatusRepository generalStatusRepository;
 
     @Override
-    public ProjectResponse getProjectById(Long id) {
-        return null;
+    @Transactional
+    public GenericResponse addProject(Project project) {
+            GeneralStatusEntity defaultStatus = generalStatusRepository.findByShortCode("ACTIVE");
+            if(Objects.isNull(defaultStatus)){
+                throw new RuntimeException("ACTIVE status not found");
+            }
+            project.setStatusId(defaultStatus.getId());
+            project.setStartDate(LocalDate.now());
+            project.setEndDate(LocalDate.now().plusMonths(12));
+        try{
+            projectRepository.save(project);
+        }catch (Exception e){
+            actionLogService.logAction("Project", project.getId(), "ERROR", "Proje ekleme işlemi başarısız!");
+            return new GenericResponse<>(false, "İşlem başarısız");
+        }
+
+        return new GenericResponse<>(true, "İşlem başarıyla tamamlandı");
     }
 
     @Override
-    public List<ProjectResponse> getAllProjects() {
-        return List.of();
+    public Project getProject(Long projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found with ID: " + projectId));
     }
 
     @Override
-    public void deleteProject(Long id) {
-
+    public GenericResponse updatePlanningType(Long projectId, PlanningType newPlanningType) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+        project.setPreviousPlanningType(project.getPlanningType());
+        project.setPlanningType(newPlanningType);
+        try{
+            projectRepository.save(project);
+        }catch (Exception e){
+            actionLogService.logAction("Project", projectId, "ERROR", "Proje planı güncellenemedi!");
+            return new GenericResponse<>(false, "İşlem başarısız");
+        }
+        actionLogService.logAction("Project", projectId, "UPDATE", "Plan değişti " + newPlanningType);
+        return new GenericResponse<>(true,"Plan tipi başarılı bir şekile güncellendi");
     }
 }

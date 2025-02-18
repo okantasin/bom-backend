@@ -1,18 +1,16 @@
 package com.java.bom.service;
 
-import com.java.bom.dto.project.CreateProjectRequest;
-import com.java.bom.dto.project.CreateProjectResponse;
-import com.java.bom.dto.project.ProjectResponse;
-import jakarta.validation.Valid;
 
-import java.util.List;
+import com.java.bom.dto.GenericResponse;
+import com.java.bom.entity.Project;
+import com.java.bom.utils.PlanningType;
 
 public interface ProjectService {
-     CreateProjectResponse createProject(@Valid CreateProjectRequest request);
 
-      ProjectResponse getProjectById(Long id);
+    GenericResponse updatePlanningType(Long projectId, PlanningType newPlanningType);
 
-    List<ProjectResponse> getAllProjects();
+    GenericResponse addProject(Project project);
 
-    void deleteProject(Long id);
+    Project getProject(Long projectId);
+
 }
